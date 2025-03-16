@@ -11,7 +11,11 @@ local-docker-infrastructure-down:
 	docker compose stop
 
 local-zenml-server-up:
+ifeq ($(shell uname), Darwin)
 	OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES poetry run zenml login --local
+else
+	poetry run zenml login --local
+endif
 
 local-zenml-server-stop:
 	poetry run zenml logout --local
