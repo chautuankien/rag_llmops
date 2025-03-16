@@ -1,0 +1,35 @@
+services:
+  feature-pipeline:
+    container_name: feature-pipeline
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./pipeline_outputs/feature_pipeline_output:/app/pipeline_outputs/feature_pipeline_output
+      - ./.env:/app/.env
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - MONGODB_URI=${MONGODB_URI}
+    depends_on:
+      - mongodb
+    networks:
+      - pipeline-network
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "llmragchatbot"
+      MONGO_INITDB_ROOT_PASSWORD: "llmragchatbot"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data: 
+  
+networks:
+  pipeline-network:
+    driver: bridge
+  

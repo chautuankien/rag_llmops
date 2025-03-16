@@ -1,0 +1,10 @@
+.env
+.zen
+logs
+pipeline_outputs
+.DS_Store
+
+src/__pycache__
+src/logger/__pycache__
+src/pipelines/__pycache__
+src/steps/feature_steps/__pycache__
