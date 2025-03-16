@@ -14,6 +14,7 @@ from src.steps.feature_steps.chunking import chunk_documents
 from src.steps.feature_steps.embedding import embed_chunks
 from src.steps.feature_steps.mongodb_loader import load_chunks_into_mongodb
 
+load_dotenv()
 
 @pipeline
 def feature_pipeline(urls: list[str], 

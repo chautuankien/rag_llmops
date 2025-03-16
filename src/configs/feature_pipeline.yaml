@@ -1,0 +1,7 @@
+parameters:
+  urls: [
+        "https://docs.zenml.io/getting-started/installation",
+        "https://docs.zenml.io/"
+        ]
+  process_delay: 1
+  base_output_dir: "pipeline_outputs/feature_pipeline_output"

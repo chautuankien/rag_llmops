@@ -18,23 +18,32 @@ ENV PATH="/root/.local/bin:$PATH"
 RUN poetry config virtualenvs.create false
 
 # Copy poetry configuration files
-COPY pyproject.toml poetry.lock* ./
+COPY pyproject.toml poetry.lock README.md ./
 
 # Install dependencies
 RUN poetry install --no-interaction --no-ansi
 
-# Copy source code
-COPY ./src/ .
-
 # Create directories
-RUN mkdir -p pipeline_outputs/feature_pipeline_output/crawled_data \
-    pipeline_outputs/feature_pipeline_output/chunked_data \
-    pipeline_outputs/feature_pipeline_output/embedded_data
+# RUN mkdir -p pipeline_outputs/feature_pipeline_output/crawled_data \
+#     pipeline_outputs/feature_pipeline_output/chunked_data \
+#     pipeline_outputs/feature_pipeline_output/embedded_data
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
+# Set the PYTHONPATH to the project root
+ENV PYTHONPATH=/app
+
+# Set environment variables for the virtual environment
+ENV PATH="/app/.venv/bin:$PATH"
+
+# Copy the project files into the container
+COPY . .
+
+# Override the default command to keep the container running indefinitely
+# CMD ["tail", "-f", "/dev/null"]
+
 # Set entry point
 # ENTRYPOINT ["poetry", "run", "python", "src/backend/pipelines/feature_pipeline.py"]
-CMD ["--help"]
+# CMD ["--help"]

@@ -1,9 +1,11 @@
+.git
 .venv
 .zen
 
-.env
 .DS_Store
+# .env
 
+tests
 logs
 pipeline_outputs
 
@@ -12,3 +14,6 @@ src/logger/__pycache__
 src/pipelines/__pycache__
 src/steps/feature_steps/__pycache__
 src/tools/__pycache__
+
+
+
