@@ -1,0 +1,72 @@
+@startuml Data Collection Diagram
+
+' Style settings
+skinparam ClassAttributeIconSize 0
+skinparam DefaultFontName Arial
+
+' Layout directives
+top to bottom direction
+
+' Abstract classes
+abstract class Document {
+    - id: UUID4
+    - url: str
+    - title: str
+    - properties: str
+    - authors: str
+    - metadata: dict
+}
+
+abstract class BaseCrawler {
+    # _createDoc(): Document
+    + extract(url: str, **kwargs): None
+    + handleError(e: Exception): None
+    + logError(mgs: str): None
+}
+
+'Interface
+interface CrawlingStrategy {
+    + fetchContent(url: str): dict[str, Any]
+}
+
+' Concrete classes
+class ArticleDocument {
+    (implementations)
+}
+class MediumCrawler {
+    # _createDoc(): Document
+    + extract(url: str, **kwargs): None 
+}
+
+class CustomArticleCrawler {
+    # _createDoc(): Document
+    + extract(url: str, **kwargs): None 
+}
+
+class SeleniumStrategy {
+    + fetchContent(url: str): dict[str, Any]
+}
+
+class AsyncHtmlStrategy {
+    + fetchContent(url: str): dict[str, Any]
+}
+
+' Relationships
+
+'Force Horizontal arrangement
+Document -[hidden]right- BaseCrawler 
+
+Document <.. BaseCrawler : <<creates>>
+Document <|-- ArticleDocument
+
+BaseCrawler <|-- MediumCrawler
+BaseCrawler <|-- CustomArticleCrawler
+
+
+MediumCrawler *-- SeleniumStrategy
+CustomArticleCrawler *-- AsyncHtmlStrategy
+
+SeleniumStrategy ..|> CrawlingStrategy
+AsyncHtmlStrategy ..|> CrawlingStrategy
+
+@enduml

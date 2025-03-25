@@ -7,8 +7,4 @@
 logs
 pipeline_outputs
 
-src/__pycache__
-src/logger/__pycache__
-src/pipelines/__pycache__
-src/steps/feature_steps/__pycache__
-src/tools/__pycache__
+**/__pycache__/**
