@@ -14,7 +14,7 @@ def ingest_to_mongodb(
     collection_name: str,
     database_name: str,
     clear_collection: bool
-    ) -> Annotated[int, "output"]:
+    ) -> None:
 
     
     logger.info("Start ingesting documents to MongoDB")
@@ -34,6 +34,10 @@ def ingest_to_mongodb(
                 f"'clear_collection' is set to True. Clearing MongoDB collection '{collection_name}' before ingestion."
             )
             service.clear_collection()
+        # Print all indexes
+        indexes = service.collection.list_indexes()
+        for index in indexes:
+            print(f"Index: {index}")
         service.ingest_documents(docs)
 
         count = service.get_collection_count()
@@ -48,5 +52,3 @@ def ingest_to_mongodb(
             "count": count,
         },
     )
-
-    return count

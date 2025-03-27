@@ -25,7 +25,7 @@ def crawl_urls(urls: list[str]) -> Annotated[list[BaseModel | None], "crawled_ur
         metadata = _add_to_metadata(metadata, crawled_domain, successfull_crawl)
     
     step_context = get_step_context()
-    step_context.add_output_metadata(output_name="crawled_links", metadata=metadata)
+    step_context.add_output_metadata(output_name="crawled_urls", metadata=metadata)
 
     logger.info(f"Successfully crawled {successfull_crawls} / {len(urls)} urls.")
 
