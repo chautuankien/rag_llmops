@@ -6,6 +6,7 @@ from zenml import pipeline
 
 # Import the modules
 from src.logger.logger import logger
+from src.steps.feature_steps.fetch_from_mongodb import fetch_from_mongodb
 from src.steps.feature_steps.data_extraction import data_extraction
 from src.steps.feature_steps.chunking import chunk_documents
 from src.steps.feature_steps.embedding import embed_chunks
@@ -44,8 +45,13 @@ def feature_pipeline(urls: list[str],
     for dir_path in [crawled_dir, chunked_dir, embedded_dir]:
         os.makedirs(dir_path, exist_ok=True)
     
-    # Step 1: Extract data from URLs
-    logger.info(f"🔄 STEP 1: Extracting data from {len(urls)} URLs")
+    # Step 1: Fetch documents from MongoDB
+    logger.info(f"🔄 STEP 1: Fetching documents from MongoDB")
+    documents = fetch_from_mongodb(limit=5)
+
+
+    # Step 2: Extract data from URLs
+    logger.info(f"🔄 STEP 2: Extracting data from {len(documents)} fetched documents")
     extracted_docs = data_extraction(urls, delay=process_delay, output_dir=crawled_dir)
     
     if not extracted_docs:
