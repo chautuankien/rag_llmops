@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from pymongo import MongoClient, errors
 
 from src.logger.logger import logger
+from src.rag_chatbot.settings import settings
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -34,9 +35,10 @@ class MongoDBService(Generic[T]):
     def __init__(
         self,
         model: Type[T],
-        mongodb_uri: str,
-        collection_name: str,
-        database_name: str,
+        mongodb_uri: str = settings.MONGODB_URI,
+        database_name: str = settings.MONGODB_DATABASE_NAME,
+        collection_name: str = settings.MONGODB_COLLECTION_NAME
+        
     ) -> None:
         """Initialize a connection to the MongoDB collection.
 
@@ -53,9 +55,9 @@ class MongoDBService(Generic[T]):
         """
 
         self.model = model
-        self.collection_name = collection_name
-        self.database_name = database_name
         self.mongodb_uri = mongodb_uri
+        self.database_name = database_name
+        self.collection_name = collection_name
 
         try:
             self.client = MongoClient(mongodb_uri, appname="rag_llmops")

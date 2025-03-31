@@ -8,20 +8,14 @@ from src.steps.data_collection_steps import (
 
 @pipeline
 def etl(
-    input: list[str],
-    connection_string: str | None,
-    collection_name: str,
-    database_name: str,
+    inputs: list[str]
 ) -> None:
     logger.info("----Start ETL pipeline----")
 
-    docs = crawl_urls.crawl_urls(urls=input)
+    docs = crawl_urls.crawl_urls(urls=inputs)
 
     ingest_to_mongodb.ingest_to_mongodb(
         docs=docs,
-        connection_string=connection_string,
-        collection_name=collection_name,
-        database_name=database_name,
         clear_collection=True
     )
 

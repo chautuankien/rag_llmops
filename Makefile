@@ -26,6 +26,8 @@ local-infrastructure-down: local-docker-infrastructure-down local-zenml-server-s
 
 
 # --- Offline ML Pipelines ---
+etl-pipeline:
+	poetry run python -m src.tools.run --run-etl-pipeline --no-cache
 feature-pipeline:
 	poetry run python -m src.tools.run --run-feature-pipeline --no-cache
 

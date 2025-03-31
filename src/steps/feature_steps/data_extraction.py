@@ -10,10 +10,11 @@ from typing_extensions import Annotated
 from zenml import get_step_context, step
 
 from src.logger.logger import logger
+from src.rag_chatbot.domain.document import Document
 
 @step
 def data_extraction(
-    urls: list[str], 
+    documents: list[Document], 
     delay: int=1,
     output_dir: str ="pipeline_outputs/feature_pipeline_output/crawled_data",
     ) -> Annotated[list[dict[str, Any]], "extracted documents"]:
@@ -31,12 +32,12 @@ def data_extraction(
     results = []
     file_id = int(time.time())
     
-    for url in urls:
+    for doc in documents:
         try:
-            logger.info(f"Processing URL: {url}")
+            logger.info(f"Processing URL: {doc}")
             
             # Extract content
-            content = _fetch_url(url)
+            content = _fetch_url(doc)
             
             if content:
                 # Convert to markdown
