@@ -26,6 +26,8 @@ local-infrastructure-down: local-docker-infrastructure-down local-zenml-server-s
 
 
 # --- Offline ML Pipelines ---
+collect-notion-data-pipeline:
+	poetry run python -m src.tools.run --run-collect-notion-data-pipeline --no-cache
 etl-pipeline:
 	poetry run python -m src.tools.run --run-etl-pipeline --no-cache
 feature-pipeline:

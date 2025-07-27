@@ -9,7 +9,7 @@ from typing_extensions import Annotated
 
 from zenml import get_step_context, step
 
-from src.logger.logger import logger
+from loguru import logger
 from src.rag_chatbot.domain.document import Document
 
 @step

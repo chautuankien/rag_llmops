@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from zenml import pipeline
 
 # Import the modules
-from src.logger.logger import logger
+from loguru import logger
 from src.steps.feature_steps.fetch_from_mongodb import fetch_from_mongodb
 from src.steps.feature_steps.data_extraction import data_extraction
 from src.steps.feature_steps.chunking import chunk_documents

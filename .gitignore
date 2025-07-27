@@ -1,10 +1,15 @@
 .venv
 .zen
+.vscode
 
 .env
 .DS_Store
 
 logs
 pipeline_outputs
+data
+plantuml
+
+test.py
 
 **/__pycache__/**

@@ -5,7 +5,7 @@ from zenml import step, get_step_context
 from typing_extensions import Annotated
 from pydantic import BaseModel
 
-from src.logger.logger import logger
+from loguru import logger
 from src.rag_chatbot.crawlers.dispatcher import CrawlerDispatcher
 
 @step

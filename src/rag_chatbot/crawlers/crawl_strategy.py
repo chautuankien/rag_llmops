@@ -1,4 +1,4 @@
-from src.logger.logger import logger
+from loguru import logger
 from abc import ABC, abstractmethod
 from typing import Dict, Any, Optional
 

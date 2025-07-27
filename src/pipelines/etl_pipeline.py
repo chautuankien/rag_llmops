@@ -1,6 +1,6 @@
 from zenml import pipeline
 
-from src.logger.logger import logger
+from loguru import logger
 from src.steps.data_collection_steps import (
     crawl_urls,
     ingest_to_mongodb

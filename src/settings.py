@@ -5,9 +5,10 @@ from dotenv import find_dotenv, load_dotenv
 
 # load_dotenv(find_dotenv())
 
-from src.logger.logger import logger
+from loguru import logger
 
-DOTENV = os.path.join(os.path.dirname(__file__), ".env")
+DOTENV = os.path.join(os.getcwd(), ".env")
+print(DOTENV)
 
 class Settings(BaseSettings):
     """
@@ -15,7 +16,7 @@ class Settings(BaseSettings):
     """
 
     model_config = SettingsConfigDict(
-        env_file=DOTENV, env_file_encoding="utf-8"
+        env_file=DOTENV, env_file_encoding="utf-8", extra='ignore'
     )
 
     # OPENAI API
@@ -40,6 +41,22 @@ class Settings(BaseSettings):
     MONGODB_COLLECTION_NAME: str = Field(
         default="source_urls",
         description="Name of the MongoDB database.",
+    )
+
+    # Notion API Configuration
+    NOTION_SECRET_KEY: str = Field(
+        default=None,
+        description="Secret key for Notion API authentication"
+    )
+
+    # AWS S3 Configuration
+    AWS_REGION_NAME: str = Field(
+        default="ap-northeast-1",
+        description="AWS region for S3 bucket operations"
+    )
+    AWS_S3_BUCKET_NAME: str = Field(
+        default="rag-llmops-bucket",
+        description="Name of the S3 bucket for storing data"
     )
 
 try:

@@ -1,7 +1,7 @@
 import re
 from urllib.parse import urlparse
 
-from src.logger.logger import logger
+from loguru import logger
 
 from .base import BaseCrawler
 from .custom_article import CustomArticleCrawler

@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 from zenml.steps import step
 
-from src.logger.logger import logger
+from loguru import logger
 
 @step
 def load_chunks_into_mongodb(chunks: list[dict[str, Any]],

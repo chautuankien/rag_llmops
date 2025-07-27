@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from typing_extensions import Annotated
 from zenml import step, get_step_context
 
-from src.logger.logger import logger
+from loguru import logger
 from src.rag_chatbot.domain.document import Document
 from src.rag_chatbot.infrastructure.mongodb.service import MongoDBService
 

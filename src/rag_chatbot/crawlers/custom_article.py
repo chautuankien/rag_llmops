@@ -1,6 +1,6 @@
 from urllib.parse import urlparse
 
-from src.logger.logger import logger
+from loguru import logger
 from .base import BaseCrawler
 from src.rag_chatbot.domain.document import Document, ArticleDocument
 from .crawl_strategy import AsyncHtmlStrategy

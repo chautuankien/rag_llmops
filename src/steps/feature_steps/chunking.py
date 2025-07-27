@@ -6,7 +6,7 @@ from typing_extensions import Annotated
 
 from zenml import get_step_context, step
 
-from src.logger.logger import logger
+from loguru import logger
 
 @step
 def chunk_documents(documents: list[dict[str, Any]],

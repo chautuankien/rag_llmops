@@ -4,8 +4,8 @@ from bson import ObjectId
 from pydantic import BaseModel
 from pymongo import MongoClient, errors
 
-from src.logger.logger import logger
-from src.rag_chatbot.settings import settings
+from loguru import logger
+from src.settings import settings
 
 T = TypeVar("T", bound=BaseModel)
 
