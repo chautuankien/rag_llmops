@@ -1,6 +1,6 @@
-from .base import BaseCrawler
+from .base_crawler import BaseCrawler
 from src.rag_chatbot.domain.document import Document, ArticleDocument
-from .crawl_strategy import SeleniumStrategy
+from ..crawl_strategy.base_crawl_strategy import SeleniumStrategy
 
 class MediumCrawler(BaseCrawler):
     """

@@ -1,9 +1,9 @@
 from urllib.parse import urlparse
 
 from loguru import logger
-from .base import BaseCrawler
+from .base_crawler import BaseCrawler
 from src.rag_chatbot.domain.document import Document, ArticleDocument
-from .crawl_strategy import AsyncHtmlStrategy
+from ..crawl_strategy.base_crawl_strategy import AsyncHtmlStrategy
 
 class CustomArticleCrawler(BaseCrawler):
     """

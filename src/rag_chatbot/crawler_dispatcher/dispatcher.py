@@ -3,8 +3,8 @@ from urllib.parse import urlparse
 
 from loguru import logger
 
-from .base import BaseCrawler
-from .custom_article import CustomArticleCrawler
+from ..crawlers.base_crawler import BaseCrawler
+from ..crawlers.custom_article import CustomArticleCrawler
 
 class CrawlerDispatcher:
     def __init__(self) -> None:

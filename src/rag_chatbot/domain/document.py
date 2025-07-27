@@ -1,32 +1,40 @@
 from abc import ABC, abstractmethod
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 import uuid
 from pydantic import BaseModel, Field
 from pathlib import Path
 import json
 
-class Document(BaseModel):
-    content: dict
-    platform: str
+## Base Document Class
+# Represents a generic document with basic attributes
+class Document(BaseModel, ABC):
+    id: str
+    content: str
+    content_quality_score: float | None = None
+    summary: str | None = None
 
+## Article Document Class
+# Represents a document extracted from an article
 class ArticleDocument(Document):
     url: str
+    title: str | None = None
+    author: str | None = None
+    published_date: str | None = None
+    tags: list[str] = Field(default_factory=list)
 
 
-## Notion Info Document ##
+## Notion Document Classes
+# Represents metadata about a Notion document
 class NotionDocumentMetadata(BaseModel):
     id: str
     url: str
     title: str
     properties: dict
 
-class NotionDocument(BaseModel):
-    id: str
+# Represents a Notion document with its content and metadata
+class NotionDocument(Document):
     metadata: NotionDocumentMetadata
     parent_metadata: NotionDocumentMetadata | None = None
-    content: str
-    content_quality_score: float | None = None
-    summary: str | None = None
     child_urls: list[str] = Field(default_factory=list)
 
     def write(

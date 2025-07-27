@@ -6,7 +6,7 @@ from typing_extensions import Annotated
 from pydantic import BaseModel
 
 from loguru import logger
-from src.rag_chatbot.crawlers.dispatcher import CrawlerDispatcher
+from src.rag_chatbot.crawler_dispatcher.dispatcher import CrawlerDispatcher
 
 @step
 def crawl_urls(urls: list[str]) -> Annotated[list[BaseModel | None], "crawled_urls"]:
