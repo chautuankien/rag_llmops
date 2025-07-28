@@ -10,7 +10,7 @@ from src.rag_chatbot.crawler_dispatcher.dispatcher import CrawlerDispatcher
 
 @step
 def crawl_urls(urls: list[str]) -> Annotated[list[BaseModel | None], "crawled_urls"]:
-    dispatcher = CrawlerDispatcher.build()
+    dispatcher = CrawlerDispatcher.build().register_notion()
 
     logger.info(f"Starting to crawl {len(urls)} url(s).")
 
@@ -51,3 +51,8 @@ def _add_to_metadata(metadata: dict, domain: str, successfull_crawl: bool) -> di
     metadata[domain]["total"] = metadata.get(domain, {}).get("total", 0) + 1
 
     return metadata
+
+if __name__ == "__main__":
+    urls = ["https://maximelabonne.substack.com/p/uncensor-any-llm-with-abliteration-d30148b7d43e_link"]
+
+    crawled_docs = crawl_urls(urls)

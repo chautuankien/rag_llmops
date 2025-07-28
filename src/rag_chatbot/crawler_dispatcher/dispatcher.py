@@ -3,8 +3,7 @@ from urllib.parse import urlparse
 
 from loguru import logger
 
-from ..crawlers.base_crawler import BaseCrawler
-from ..crawlers.custom_article import CustomArticleCrawler
+from src.rag_chatbot.crawlers import BaseCrawler, CustomArticleCrawler, NotionCrawler
 
 class CrawlerDispatcher:
     def __init__(self) -> None:
@@ -16,6 +15,11 @@ class CrawlerDispatcher:
 
         return dispatcher
     
+    def register_notion(self) -> "CrawlerDispatcher":
+        self.register("https://www.notion.so/*", NotionCrawler)
+
+        return self
+
     def register(self, domain: str, crawler: type[BaseCrawler]) -> None:
         parsed_domain = urlparse(domain)
         domain = parsed_domain.netloc
@@ -26,7 +30,7 @@ class CrawlerDispatcher:
         for pattern, crawler in self._crawlers.items():
             if re.match(pattern, url):
                 return crawler()
-        else:
-            logger.warning(f"No crawler found for {url}. Defaulting to CustomArticleCrawler.")
+            else:
+                logger.warning(f"No crawler found for {url}. Defaulting to CustomArticleCrawler.")
 
-            return CustomArticleCrawler()
+                return CustomArticleCrawler()

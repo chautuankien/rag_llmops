@@ -8,19 +8,19 @@ import json
 ## Base Document Class
 # Represents a generic document with basic attributes
 class Document(BaseModel, ABC):
-    id: str
-    content: str
+    id: str | None = None
+    content: str | None = None
     content_quality_score: float | None = None
     summary: str | None = None
 
 ## Article Document Class
 # Represents a document extracted from an article
 class ArticleDocument(Document):
-    url: str
+    url: str | None = None
     title: str | None = None
+    language: str | None = None
     author: str | None = None
-    published_date: str | None = None
-    tags: list[str] = Field(default_factory=list)
+    platform: str | None = None
 
 
 ## Notion Document Classes

@@ -34,7 +34,7 @@ class MongoDBService(Generic[T]):
 
     def __init__(
         self,
-        model: Type[T],
+        model: Type[T] | None = None,
         mongodb_uri: str = settings.MONGODB_URI,
         database_name: str = settings.MONGODB_DATABASE_NAME,
         collection_name: str = settings.MONGODB_COLLECTION_NAME
@@ -111,7 +111,7 @@ class MongoDBService(Generic[T]):
             logger.error(f"Error clearing the collection: {e}")
             raise
 
-    def ingest_documents(self, documents: list[T]) -> None:
+    def ingest_documents(self, documents: list[list[T]]) -> None:
         """Insert multiple documents into the MongoDB collection.
 
         Args:
@@ -123,19 +123,20 @@ class MongoDBService(Generic[T]):
         """
 
         try:
-            if not documents or not all(
-                isinstance(doc, BaseModel) for doc in documents
-            ):
-                raise ValueError("Documents must be a list of Pycantic models.")
+            for doc_list in documents:
+                if not doc_list or not all(
+                    isinstance(doc, BaseModel) for doc in doc_list
+                ):
+                    raise ValueError("Documents must be a list of Pydantic models.")
 
-            dict_documents = [doc.model_dump() for doc in documents]
+                dict_documents = [doc.model_dump() for doc in doc_list]
 
-            # Remove '_id' fields to avoid duplicate key errors
-            for doc in dict_documents:
-                doc.pop("_id", None)
+                # Remove '_id' fields to avoid duplicate key errors
+                for doc in dict_documents:
+                    doc.pop("_id", None)
 
-            self.collection.insert_many(dict_documents)
-            logger.debug(f"Inserted {len(documents)} documents into MongoDB.")
+                self.collection.insert_many(dict_documents)
+                logger.debug(f"Inserted {len(documents)} documents into MongoDB.")
         except errors.PyMongoError as e:
             logger.error(f"Error inserting documents: {e}")
             raise
