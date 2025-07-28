@@ -8,7 +8,7 @@ from pydantic import BaseModel
 from loguru import logger
 from src.rag_chatbot.crawler_dispatcher.dispatcher import CrawlerDispatcher
 
-@step(enable_cache=True)
+@step()
 def crawl_urls(urls: list[str]) -> Annotated[list[BaseModel], "crawled_urls"]:
     dispatcher = CrawlerDispatcher.build().register_notion()
 

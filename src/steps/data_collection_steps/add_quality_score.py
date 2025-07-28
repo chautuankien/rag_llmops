@@ -8,13 +8,13 @@ from src.rag_chatbot.domain.document import Document, ArticleDocument, NotionDoc
 # Define the same union type
 DocumentTypes = ArticleDocument | NotionDocument
 
-@step(enable_cache=True)
+@step()
 def add_quality_score(
     documents: list[DocumentTypes],
     model_id = "gpt-4o-mini",
-    mock: bool = True,
+    mock: bool = False,
     max_concurrent_requests: int = 5
-) -> Annotated[list[Document], "scored_documents"]:
+) -> Annotated[list[DocumentTypes], "scored_documents"]:
     """Add quality scores to a list of documents."""
     logger.info("----Start adding quality scores----")
 

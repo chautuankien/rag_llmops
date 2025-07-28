@@ -3,3 +3,6 @@ parameters:
     - https://maximelabonne.substack.com/p/uncensor-any-llm-with-abliteration-d30148b7d43e
     - https://www.notion.so/23d6c88a5848811b88d8fb1a5028e5b1?v=23d6c88a584881f0b46d000cdcadad31&source=copy_link
     # - https://maximelabonne.substack.com/p/create-mixtures-of-experts-with-mergekit-11b318c99562
+  quality_agent_model_id: gpt-4o-mini
+  quality_agent_mock: false
+  max_concurrent_requests: 5

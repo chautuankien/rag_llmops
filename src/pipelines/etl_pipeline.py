@@ -9,13 +9,21 @@ from src.steps.data_collection_steps import (
 
 @pipeline
 def etl(
-    inputs: list[str]
+    inputs: list[str],
+    quality_agent_model_id: str = "gpt-4o-mini",
+    quality_agent_mock: bool = False,
+    max_concurrent_requests: int = 5
 ) -> None:
     logger.info("----Start ETL pipeline----")
 
     crawled_docs = crawl_urls(urls=inputs)
 
-    scored_docs = add_quality_score(documents=crawled_docs)
+    scored_docs = add_quality_score(
+        documents=crawled_docs,
+        model_id=quality_agent_model_id,
+        mock=quality_agent_mock,
+        max_concurrent_requests=max_concurrent_requests
+    )
 
     ingest_to_mongodb(
         docs=scored_docs,

@@ -119,7 +119,7 @@ DOCUMENT:
         )
 
         success_count = len(
-            [doc for doc in scored_documents if hasattr(doc, "quality_score")]
+            [doc for doc in scored_documents if doc.content_quality_score is not None]
         )
         failed_count = total_docs - success_count
         logger.info(

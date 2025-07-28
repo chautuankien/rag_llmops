@@ -10,7 +10,7 @@ import json
 class Document(BaseModel, ABC):
     id: str | None = None
     content: str | None = None
-    content_quality_score: float | None = None
+    content_quality_score: float | dict | None = None
     summary: str | None = None
 
     def add_quality_score(self, score: float) -> "Document":
