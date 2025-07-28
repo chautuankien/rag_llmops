@@ -13,6 +13,12 @@ class Document(BaseModel, ABC):
     content_quality_score: float | None = None
     summary: str | None = None
 
+    def add_quality_score(self, score: float) -> "Document":
+        """Add a quality score to the document."""
+        self.content_quality_score = score
+        return self
+
+
 ## Article Document Class
 # Represents a document extracted from an article
 class ArticleDocument(Document):

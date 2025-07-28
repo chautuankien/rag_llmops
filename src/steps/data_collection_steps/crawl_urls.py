@@ -8,8 +8,8 @@ from pydantic import BaseModel
 from loguru import logger
 from src.rag_chatbot.crawler_dispatcher.dispatcher import CrawlerDispatcher
 
-@step
-def crawl_urls(urls: list[str]) -> Annotated[list[BaseModel | None], "crawled_urls"]:
+@step(enable_cache=True)
+def crawl_urls(urls: list[str]) -> Annotated[list[BaseModel], "crawled_urls"]:
     dispatcher = CrawlerDispatcher.build().register_notion()
 
     logger.info(f"Starting to crawl {len(urls)} url(s).")
@@ -21,7 +21,7 @@ def crawl_urls(urls: list[str]) -> Annotated[list[BaseModel | None], "crawled_ur
         successfull_crawl, crawled_domain, doc = _crawl_url(dispatcher, url)
         successfull_crawls += successfull_crawl
 
-        docs.append(doc)
+        docs.extend(doc)
         metadata = _add_to_metadata(metadata, crawled_domain, successfull_crawl)
     
     step_context = get_step_context()

@@ -8,7 +8,7 @@ from dotenv import find_dotenv, load_dotenv
 from loguru import logger
 
 DOTENV = os.path.join(os.getcwd(), ".env")
-print(DOTENV)
+# print(DOTENV)
 
 class Settings(BaseSettings):
     """

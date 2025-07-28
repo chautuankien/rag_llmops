@@ -3,6 +3,7 @@ from zenml import pipeline
 from loguru import logger
 from src.steps.data_collection_steps import (
     crawl_urls,
+    add_quality_score,
     ingest_to_mongodb
 )
 
@@ -12,10 +13,12 @@ def etl(
 ) -> None:
     logger.info("----Start ETL pipeline----")
 
-    docs = crawl_urls.crawl_urls(urls=inputs)
+    crawled_docs = crawl_urls(urls=inputs)
 
-    ingest_to_mongodb.ingest_to_mongodb(
-        docs=docs,
+    scored_docs = add_quality_score(documents=crawled_docs)
+
+    ingest_to_mongodb(
+        docs=scored_docs,
         clear_collection=True
     )
 
@@ -27,9 +30,11 @@ if __name__ == "__main__":
         "https://www.notion.so/23d6c88a5848811b88d8fb1a5028e5b1?v=23d6c88a584881f0b46d000cdcadad31&source=copy_link"
     ]
 
-    docs = crawl_urls.crawl_urls(urls=urls)
+    crawled_docs = crawl_urls(urls=urls)
 
-    ingest_to_mongodb.ingest_to_mongodb(
-        docs=docs,
+    scored_docs = add_quality_score(documents=crawled_docs)
+
+    ingest_to_mongodb(
+        docs=scored_docs,
         clear_collection=True
     ) 

@@ -10,7 +10,7 @@ DocumentTypes = ArticleDocument | NotionDocument
 
 @step
 def ingest_to_mongodb(
-    docs: list[list[DocumentTypes]], 
+    docs: list[DocumentTypes], 
     clear_collection: bool
     ) -> None:
     
