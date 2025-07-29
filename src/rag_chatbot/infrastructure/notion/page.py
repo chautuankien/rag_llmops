@@ -52,6 +52,7 @@ class NotionPageClient:
             parent_metadata=parent_metadata,
             content=content,
             child_urls=urls,
+            doc_type="NotionDocument"
         )
     
     def _retrieve_child_blocks(self, block_id: str) -> list[dict]:

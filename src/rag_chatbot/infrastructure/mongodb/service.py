@@ -34,7 +34,7 @@ class MongoDBService(Generic[T]):
 
     def __init__(
         self,
-        model: Type[T] | None = None,
+        model: dict[str, Type[T]] | None = None,
         mongodb_uri: str = settings.MONGODB_URI,
         database_name: str = settings.MONGODB_DATABASE_NAME,
         collection_name: str = settings.MONGODB_COLLECTION_NAME
@@ -154,14 +154,17 @@ class MongoDBService(Generic[T]):
             Exception: If the query operation fails.
         """
         try:
+            # Execute the MongoDB query with the provided filter and limit
+            # .find(query) creates a cursor that matches documents based on the query dictionary
+            # .limit(limit) restricts the number of documents returned to prevent memory issues
             documents = list(self.collection.find(query).limit(limit))
             logger.debug(f"Fetched {len(documents)} documents with query: {query}")
-            return self.__parse_documents(documents)
+            return self._parse_documents(documents)
         except Exception as e:
             logger.error(f"Error fetching documents: {e}")
             raise
 
-    def __parse_documents(self, documents: list[dict]) -> list[T]:
+    def _parse_documents(self, documents: list[dict]) -> list[T]:
         """Convert MongoDB documents to Pydantic model instances.
 
         Converts MongoDB ObjectId fields to strings and transforms the document structure
@@ -174,15 +177,34 @@ class MongoDBService(Generic[T]):
             List of validated Pydantic model instances.
         """
         parsed_documents = []
+        # Iterate through each document (dictionary) returned from MongoDB
         for doc in documents:
             for key, value in doc.items():
+                # Check if the value is a MongoDB ObjectId
+                # ObjectId is a special BSON type that needs to be converted to string
+                # because Pydantic models expect string IDs, not ObjectId objects
                 if isinstance(value, ObjectId):
                     doc[key] = str(value)
 
+            # Remove the MongoDB '_id' field from the document
+            # MongoDB uses '_id' as the primary key, but our Pydantic model uses 'id'
+            # .pop() removes and returns the value, or None if the key doesn't exist
             _id = doc.pop("_id", None)
+
+            # Add the '_id' value back as 'id' to match our Pydantic model schema
             doc["id"] = _id
 
-            parsed_doc = self.model.model_validate(doc)
+            # Create a Pydantic model instance from the modified document
+            # .model_validate() performs:
+            # 1. Type checking and conversion
+            # 2. Data validation according to the model schema
+            # 3. Returns a fully validated Pydantic object
+            # If validation fails, this will raise a ValidationError
+            if doc.get("doc_type") == "NotionDocument":
+                parsed_doc = self.model[doc.get("doc_type")].model_validate(doc)
+            elif doc.get("doc_type") == "ArticleDocument":
+                parsed_doc = self.model[doc.get("doc_type")].model_validate(doc)
+
             parsed_documents.append(parsed_doc)
 
         return parsed_documents
@@ -212,3 +234,22 @@ class MongoDBService(Generic[T]):
 
         self.client.close()
         logger.debug("Closed MongoDB connection.")
+
+if __name__ == "__main__":
+    # Example usage of MongoDBService
+    from src.rag_chatbot.domain.document import NotionDocument, ArticleDocument
+
+    model: dict = {
+        "NotionDocument": NotionDocument,
+        "ArticleDocument": ArticleDocument,
+    }
+
+    service = MongoDBService(model=model, 
+                             collection_name=settings.MONGODB_COLLECTION_NAME)
+
+    # Fetch documents with a limit of 10
+    fetched_docs = service.fetch_documents(limit=10, query={})
+    print(f"Fetched {len(fetched_docs)} documents.")
+
+    # Close the service
+    service.close()

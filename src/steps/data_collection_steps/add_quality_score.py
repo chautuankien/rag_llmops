@@ -12,7 +12,7 @@ DocumentTypes = ArticleDocument | NotionDocument
 def add_quality_score(
     documents: list[DocumentTypes],
     model_id = "gpt-4o-mini",
-    mock: bool = False,
+    mock: bool = True,
     max_concurrent_requests: int = 5
 ) -> Annotated[list[DocumentTypes], "scored_documents"]:
     """Add quality scores to a list of documents."""

@@ -2,7 +2,7 @@ from typing import Union
 from zenml import step, get_step_context
 
 from loguru import logger
-from src.rag_chatbot.domain.document import Document, ArticleDocument, NotionDocument
+from src.rag_chatbot.domain.document import ArticleDocument, NotionDocument, get_type_mapping
 from src.rag_chatbot.infrastructure.mongodb.service import MongoDBService
 
 # Define the same union type
@@ -16,9 +16,11 @@ def ingest_to_mongodb(
     
     logger.info("Start ingesting documents to MongoDB")
 
-    # doc_type = type(docs[0][0])
-    # with MongoDBService(model=doc_type) as service:
-    with MongoDBService() as service:
+    # Extract document types and build a dictionary mapping class names to their types
+    docs_type = get_type_mapping()
+
+    with MongoDBService(model=docs_type) as service:
+    # with MongoDBService() as service:
         if clear_collection:    
             logger.warning(
                 f"'clear_collection' is set to True. Clearing MongoDB collection before ingestion."

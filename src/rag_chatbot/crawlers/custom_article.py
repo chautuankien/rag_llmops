@@ -43,6 +43,7 @@ class CustomArticleCrawler(BaseCrawler):
             language=doc_transformed.metadata.get("language", ""),
             platform=platform,
             content=doc_transformed.page_content,
+            doc_type="ArticleDocument"
         )
         extracted_docs.append(doc)
         logger.info(f"Successfully scraped article: {url}")
